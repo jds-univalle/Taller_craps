@@ -25,23 +25,23 @@ public class GameController {
     private Label nicknameLabel;
 
     @FXML
-    private Label tiroLabel;
+    private Label throwLabel;
 
     @FXML
-    private Label puntoLabel;
+    private Label pointLabel;
 
     @FXML
-    private Label juegosGanadosLabel;
+    private Label gamesWonLabel;
 
     @FXML
-    private Label juegosPerdidosLabel;
+    private Label gamesLostLabel;
 
     @FXML
-    private TextArea resultadoTextArea;
+    private TextArea resultTextArea;
 
     @FXML
     public void initialize() {
-        actualizarVista();
+        updateView();
     }
 
     public Player getCurrentPlayer() {
@@ -55,25 +55,25 @@ public class GameController {
 
     @FXML
     void onMouseClickedDropButton(MouseEvent event) {
-        game.lanzarDados();
-        actualizarVista();
+        game.rollDice();
+        updateView();
     }
 
-    private void actualizarVista() {
-        if (game.getTiro() > 0) {
+    private void updateView() {
+        if (game.getThrowValue() > 0) {
             dice1ImageView.setImage(new Image(
                     getClass().getResourceAsStream(game.getDice1().getImagePath())));
             dice2ImageView.setImage(new Image(
                     getClass().getResourceAsStream(game.getDice2().getImagePath())));
         }
 
-        tiroLabel.setText(game.getTiro() > 0 ? String.valueOf(game.getTiro()) : "-");
-        puntoLabel.setText(game.isPuntoDefinido() ? String.valueOf(game.getPunto()) : "-");
-        juegosGanadosLabel.setText(String.valueOf(game.getJuegosGanados()));
-        juegosPerdidosLabel.setText(String.valueOf(game.getJuegosPerdidos()));
+        throwLabel.setText(game.getThrowValue() > 0 ? String.valueOf(game.getThrowValue()) : "-");
+        pointLabel.setText(game.isPointEstablished() ? String.valueOf(game.getPoint()) : "-");
+        gamesWonLabel.setText(String.valueOf(game.getGamesWon()));
+        gamesLostLabel.setText(String.valueOf(game.getGamesLost()));
 
-        if (resultadoTextArea != null) {
-            resultadoTextArea.setText(game.getMensaje());
+        if (resultTextArea != null) {
+            resultTextArea.setText(game.getMessage());
         }
     }
 }
