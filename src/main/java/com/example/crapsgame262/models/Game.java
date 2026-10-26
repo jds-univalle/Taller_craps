@@ -1,9 +1,13 @@
 package com.example.crapsgame262.models;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
     private final Dice dice1;
     private final Dice dice2;
+    private final List<Integer> historial = new ArrayList<>();
+
 
     private int throwValue;
     private int point;
@@ -30,6 +34,7 @@ public class Game {
         int value1 = dice1.roll();
         int value2 = dice2.roll();
         throwValue = value1 + value2;
+        historial.add(throwValue);
 
         if (pointEstablished) {
             playPointRoll();
@@ -75,6 +80,14 @@ public class Game {
         }
     }
 
+    public List<Integer> getHistorial() {
+        return historial;
+    }
+
+    public String getHistorialTexto() {
+        return "Tiros: " + historial;
+    }
+
     public Dice getDice1() {
         return dice1;
     }
@@ -105,5 +118,10 @@ public class Game {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getSummary() {
+        return "Ganados: " + gamesWon + " | Perdidos: " + gamesLost;
+
     }
 }
