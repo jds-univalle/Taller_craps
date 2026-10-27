@@ -27,25 +27,23 @@ public class GameController {
     private Label nicknameLabel;
 
     @FXML
-
-    private Label tiroLabel;
-
-    @FXML
-    private Label puntoLabel;
+    private Label throwLabel;
 
     @FXML
-    private Label juegosGanadosLabel;
+    private Label pointLabel;
 
     @FXML
-    private Label juegosPerdidosLabel;
+    private Label gamesWonLabel;
 
     @FXML
-    private TextArea resultadoTextArea;
+    private Label gamesLostLabel;
+
+    @FXML
+    private TextArea resultTextArea;
 
     @FXML
     public void initialize() {
-        actualizarVista();
-
+        updateView();
     }
 
     public Player getCurrentPlayer() {
@@ -59,41 +57,37 @@ public class GameController {
 
     @FXML
     void onMouseClickedDropButton(MouseEvent event) {
-
-        game.lanzarDados();
-        actualizarVista();
+        game.rollDice();
+        updateView();
     }
 
-    private void actualizarVista() {
-        if (game.getTiro() > 0) {
-
+    private void updateView() {
+        if (game.getThrowValue() > 0) {
             dice1ImageView.setImage(new Image(
                     getClass().getResourceAsStream(game.getDice1().getImagePath())));
             dice2ImageView.setImage(new Image(
                     getClass().getResourceAsStream(game.getDice2().getImagePath())));
         }
 
+        throwLabel.setText(game.getThrowValue() > 0 ? String.valueOf(game.getThrowValue()) : "-");
+        pointLabel.setText(game.isPointEstablished() ? String.valueOf(game.getPoint()) : "-");
+        gamesWonLabel.setText(String.valueOf(game.getGamesWon()));
+        gamesLostLabel.setText(String.valueOf(game.getGamesLost()));
 
-        tiroLabel.setText(game.getTiro() > 0 ? String.valueOf(game.getTiro()) : "-");
-        puntoLabel.setText(game.isPuntoDefinido() ? String.valueOf(game.getPunto()) : "-");
-        juegosGanadosLabel.setText(String.valueOf(game.getJuegosGanados()));
-        juegosPerdidosLabel.setText(String.valueOf(game.getJuegosPerdidos()));
-
-        if (resultadoTextArea != null) {
-            resultadoTextArea.setText(game.getMensaje() + "\n" + game.getHistorialTexto());
+        if (resultTextArea != null) {
+            resultTextArea.setText(game.getMessage() + "\n" + game.getHistorialTexto());
         }
-
     }
-  @FXML
-     void onActionHelpButton(ActionEvent event) {
-         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-         alert.setTitle("Instrucciones");
-         alert.setHeaderText("Cómo jugar Craps");
-         alert.setContentText("Lanzas dos dados.\n"
-                 + "Si en el primer tiro sacas 7 u 11, ganas.\n"
-                 + "Si sacas 2, 3 o 12 (Craps), pierdes.\n"
-                 + "Cualquier otro número (4, 5, 6, 8, 9, 10) es tu \"punto\" y sigues lanzando.\n"
-                 + "Si sacas tu punto antes de un 7, ganas; si sacas 7 antes, pierdes.");
-         alert.showAndWait();
-      }
+    @FXML
+    void onActionHelpButton(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Instrucciones");
+        alert.setHeaderText("Como jugar Craps");
+        alert.setContentText("Lanzas dos dados.\n"
+                + "Si en el primer tiro sacas 7 u 11, ganas.\n"
+                + "Si sacas 2, 3 o 12 (Craps), pierdes.\n"
+                + "Cualquier otro número (4, 5, 6, 8, 9, 10) es tu \"punto\" y sigues lanzando.\n"
+                + "Si sacas tu punto antes de un 7, ganas; si sacas 7 antes, pierdes.");
+        alert.showAndWait();
+    }
 }

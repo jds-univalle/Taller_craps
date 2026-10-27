@@ -7,80 +7,75 @@ public class Game {
     private final Dice dice1;
     private final Dice dice2;
     private final List<Integer> historial = new ArrayList<>();
-
-    private int tiro;
-    private int punto;
-    private int juegosGanados;
-    private int juegosPerdidos;
-    private boolean puntoDefinido;
-    private String mensaje;
-
+    private int throwValue;
+    private int point;
+    private int gamesWon;
+    private int gamesLost;
+    private boolean pointEstablished;
+    private String message;
 
     public Game() {
         this.dice1 = new Dice();
         this.dice2 = new Dice();
-
-        this.tiro = 0;
-        this.punto = 0;
-        this.juegosGanados = 0;
-        this.juegosPerdidos = 0;
-        this.puntoDefinido = false;
-        this.mensaje = "Lanza los dados para iniciar el juego.";
+        this.throwValue = 0;
+        this.point = 0;
+        this.gamesWon = 0;
+        this.gamesLost = 0;
+        this.pointEstablished = false;
+        this.message = "Lanza los dados para iniciar el juego.";
     }
 
     /**
-     * Realiza un tiro de los dos dados y aplica las reglas del craps.
+     * Rolls both dice and applies the craps rules to the resulting value.
      */
-    public void lanzarDados() {
-        int valor1 = dice1.roll();
-        int valor2 = dice2.roll();
-        tiro = valor1 + valor2;
-        historial.add(tiro);
-
-        if (puntoDefinido) {
-            jugarTiroDePunto();
+    public void rollDice() {
+        int value1 = dice1.roll();
+        int value2 = dice2.roll();
+        throwValue = value1 + value2;
+        historial.add(throwValue);
+        if (pointEstablished) {
+            playPointRoll();
         } else {
-            jugarTiroDeSalida();
+            playComeOutRoll();
         }
     }
 
     /**
-     * Primer tiro de cada juego: natural (7 u 11) gana, craps (2, 3 o 12) pierde,
-     * cualquier otro valor establece el punto.
+     * Come-out roll: a natural (7 or 11) wins, craps (2, 3 or 12) loses,
+     * any other value establishes the point.
      */
-    private void jugarTiroDeSalida() {
-        if (tiro == 7 || tiro == 11) {
-            juegosGanados++;
-            mensaje = "Tiro de salida: " + tiro + ". Natural! Ganaste el juego.";
-        } else if (tiro == 2 || tiro == 3 || tiro == 12) {
-            juegosPerdidos++;
-            mensaje = "Tiro de salida: " + tiro + ". Craps! Perdiste el juego.";
+    private void playComeOutRoll() {
+        if (throwValue == 7 || throwValue == 11) {
+            gamesWon++;
+            message = "Tiro de salida: " + throwValue + ". Natural! Ganaste el juego.";
+        } else if (throwValue == 2 || throwValue == 3 || throwValue == 12) {
+            gamesLost++;
+            message = "Tiro de salida: " + throwValue + ". Craps! Perdiste el juego.";
         } else {
-            punto = tiro;
-            puntoDefinido = true;
-            mensaje = "Tiro de salida: " + tiro + ". Punto establecido en " + punto + ".";
+            point = throwValue;
+            pointEstablished = true;
+            message = "Tiro de salida: " + throwValue + ". Punto establecido en " + point + ".";
         }
     }
 
     /**
-     * Tiros posteriores: repetir el punto gana, sacar 7 pierde.
+     * Following rolls: matching the point wins, rolling a 7 loses.
      */
-    private void jugarTiroDePunto() {
-        if (tiro == punto) {
-            juegosGanados++;
-            mensaje = "Tiro: " + tiro + ". Repetiste el punto " + punto + ". Ganaste el juego!";
-            puntoDefinido = false;
-            punto = 0;
-        } else if (tiro == 7) {
-            juegosPerdidos++;
-            mensaje = "Tiro: " + tiro + ". Siete fuera! Perdiste el juego, el punto era " + punto + ".";
-            puntoDefinido = false;
-            punto = 0;
+    private void playPointRoll() {
+        if (throwValue == point) {
+            gamesWon++;
+            message = "Tiro: " + throwValue + ". Repetiste el punto " + point + ". Ganaste el juego!";
+            pointEstablished = false;
+            point = 0;
+        } else if (throwValue == 7) {
+            gamesLost++;
+            message = "Tiro: " + throwValue + ". Siete fuera! Perdiste el juego, el punto era " + point + ".";
+            pointEstablished = false;
+            point = 0;
         } else {
-            mensaje = "Tiro: " + tiro + ". Sigue lanzando, el punto es " + punto + ".";
+            message = "Tiro: " + throwValue + ". Sigue lanzando, el punto es " + point + ".";
         }
     }
-
 
     public Dice getDice1() {
         return dice1;
@@ -90,36 +85,34 @@ public class Game {
         return dice2;
     }
 
-
-    public int getTiro() {
-        return tiro;
+    public int getThrowValue() {
+        return throwValue;
     }
 
-    public int getPunto() {
-        return punto;
+    public int getPoint() {
+        return point;
     }
 
-    public int getJuegosGanados() {
-        return juegosGanados;
+    public int getGamesWon() {
+        return gamesWon;
     }
 
-    public int getJuegosPerdidos() {
-        return juegosPerdidos;
+    public int getGamesLost() {
+        return gamesLost;
     }
 
-    public boolean isPuntoDefinido() {
-        return puntoDefinido;
+    public boolean isPointEstablished() {
+        return pointEstablished;
     }
 
-    public String getMensaje() {
-        return mensaje;
-
+    public String getMessage() {
+        return message;
     }
     public List<Integer> getHistorial() {
-      return historial;
-}
+        return historial;
+    }
 
     public String getHistorialTexto() {
-      return "Tiros: " + historial;
-}
+        return "Tiros: " + historial;
+    }
 }
