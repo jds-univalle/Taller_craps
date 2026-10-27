@@ -75,7 +75,7 @@ public class GameController {
         gamesLostLabel.setText(String.valueOf(game.getGamesLost()));
 
         if (resultTextArea != null) {
-            resultTextArea.setText(game.getMessage());
+            resultTextArea.setText(game.getMessage() + "\n" + game.getHistorialTexto());
         }
     }
     @FXML
